@@ -55,3 +55,28 @@ def loadJsonFileGen(f, encoding='utf-8', gen=False):
         d = json.loads(line)
         yield lineid, d
 
+
+def trainTestSplit(datas, por=0.2, test_size=None):
+    if test_size and test_size > 0:
+        train, dev = datas[:-test_size], datas[-test_size:]
+        return train, dev
+    train_size = int(len(datas) * 0.8)
+    train, dev = datas[:train_size], datas[train_size:]
+    return train, dev
+    
+    
+def save_train_datas(output_dir, train, dev):
+    import json
+    from pathlib import Path
+    if not Path(output_dir).exists():
+        Path(output_dir).mkdir(parents=True)
+    with open(str(Path(output_dir) / 'train.txt'), 'w', encoding='utf-8') as fout:
+        for d in train:
+            if isinstance(d, dict):
+                d = json.dumps(d, ensure_ascii=False)
+            fout.write("%s\n" % str(d))
+    with open(str(Path(output_dir) / 'dev.txt'), 'w', encoding='utf-8') as fout:
+        for d in dev:
+            if isinstance(d, dict):
+                d = json.dumps(d, ensure_ascii=False)
+            fout.write("%s\n" % str(d))

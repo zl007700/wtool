@@ -15,7 +15,7 @@ class Seg(object):
     def __init__(self):
 
         self.dir_path = os.path.abspath(os.path.dirname(__file__))
-        self.dict_dir_path = os.path.join(self.dir_path, 'suosi_dict')
+        self.dict_dir_path = os.path.join(self.dir_path, 'word_dict')
         self.du = DataUtils()
 
         fs = os.listdir(self.dict_dir_path)
