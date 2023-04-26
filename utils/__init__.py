@@ -1,5 +1,4 @@
 
-
 def doc2docx(fpin, fpout):
     """ doc文件转docx文件 """
     from win32com import client as wc 
@@ -35,5 +34,24 @@ def docx2txt(fpin, fpout):
         fout.write("\n".join(paragraphs))
 
 
+def loadFile(f, encoding='utf-8'):
+    with open(f, 'r', encoding=encoding) as fin:
+        for lineid, line in enumerate(fin):
+            yield lineid, line.strip()
 
+
+def loadJsonFile(f, encoding='utf-8', gen=False):
+    import json
+    datas =  []
+    for lineid, line in loadFile(f, encoding=encoding):
+        d = json.loads(line)
+        datas.append((lineid, d))
+    return datas
+
+
+def loadJsonFileGen(f, encoding='utf-8', gen=False):
+    import json
+    for lineid, line in loadFile(f, encoding=encoding):
+        d = json.loads(line)
+        yield lineid, d
 
