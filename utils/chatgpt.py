@@ -99,10 +99,25 @@ class GPT3TurboAPI(object):
         return answer.strip(), None
 
 
+class ChatGPT():
+
+    def __init__(self, api_key):
+        openai.api_key = api_key
+        self.fmt = ""
+
+    def set_fmt(self, fmt):
+        self.fmt = fmt
+
+    def chat(self, query):
+        if self.fmt:
+            query = self.fmt % query
+        session = ChatSession()
+        api = GPT3TurboAPI()
+        ret = session.construct_query_gpt3Turbo(query)
+        ans = api.get_answer(ret)
+        return ans
+
 if __name__ == '__main__':
-    openai.api_key = 'xxx'
-    query = "xxx"
-    session = ChatSession()
-    api = GPT3TurboAPI()
-    ret = session.construct_query_gpt3Turbo(query)
-    ans = api.get_answer(ret)
+    gpt = ChatGPT('sk-xxx')
+    ret = gpt.chat("今天天气怎么样")
+    print(ret)
